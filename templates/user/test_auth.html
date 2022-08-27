@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>user</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<body>
+<form>
+{% if user.is_authenticated %}
+    <!-- Name input -->
+    <div class="form-outline mb-4">
+        <input type="text" id="form4Example1" class="form-control"/>
+        <label class="form-label" for="form4Example1">Name</label>
+    </div>
+
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <input type="email" id="form4Example2" class="form-control"/>
+        <label class="form-label" for="form4Example2">Email address</label>
+    </div>
+
+    <!-- Message input -->
+    <div class="form-outline mb-4">
+        <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+        <label class="form-label" for="form4Example3">Message</label>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="form-check d-flex justify-content-center mb-4">
+        <input class="form-check-input me-2" type="checkbox" value="" id="form4Example4" checked/>
+        <label class="form-check-label" for="form4Example4">
+            Send me a copy of this message
+        </label>
+    </div>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <a href="{% url 'my_login' %}">
+            <button type="button" class="btn btn-primary btn-lg">Logout</button>
+        </a>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endif %}
+{% if not user.is_authenticated %}
+ <h2 class="product-title">you have to register or login </h2>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <a href="{% url 'register' %}">
+            <button type="button" class="btn btn-primary btn-lg">Register</button>
+        </a>
+    </div>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <a href="{% url 'my_login' %}">
+            <button type="button" class="btn btn-primary btn-lg">Login</button>
+        </a>
+    </div>
+{% endif %}
+</form>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,7 @@
+asgiref==3.5.2
+Django==3.2
+sqlparse==0.4.2
+Pillow==9.1.1
+django-smart-selects~=1.5.9
+django-admin-interface
+djangorestframework==3.13.1

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+{#<hr>#}
+{#{% for comment in product.comment_set.all %}#}
+{#    {% if comment.owner == user %}#}
+{#        <button>redact</button>#}
+{#    {% endif %}#}
+{#    <h4>{{ comment.text }}</h4>#}
+{#    <br>#}
+{#{% endfor %}#}
+{#<hr>#}
+
+<section class="commodity_content container">
+    <div class="row ">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 commodity_hero">
+            <div class="row commodity_hero_row">
+                <div class="col-12 ">
+                    <div class="border  commodity_hero_content">
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{{ product.image.url }}" class="slide-img d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{{ product.image.url }}" class="slide-img d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{{ product.image.url }}" class="slide-img d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="commodity_take">
+                <h4 class="commodity_take-title">Доставка и оплата</h4>
+                <p class="commodity_take-about">{{ product.description }}</p>
+
+                <div class="commodity_take_warn">
+                    <p class="commodity_take_warn-title">Памятка покупателю</p>
+                    <ul class="commodity_take_warn_content">
+                        <li class="commodity_take_warn-list">Покупатель должен обеспечить беспрепятственный пронос
+                            доставленного товара;
+                        </li>
+                        <li class="commodity_take_warn-list">В согласованное время доставки заказа покупатель должен
+                            находитьс
+
+                            я по адресу доставки;
+                        </li>
+                        <li class="commodity_take_warn-list">При получении товара покупатель должен в присутствии
+                            курьера осмотреть товар на наличие комплектации и отсутствие внешних дефектов в изделии.
+                        </li>
+                        <li class="commodity_take_warn-list">После приема товара претензии по поводу внешнего вида и
+                            комплектации не принимаются.
+                        </li>
+                    </ul>
+                </div>
+                <h4 class="commodity_take-title">Comments</h4>
+                <div class="comments">
+                    {% for com in product.comments.all %}
+                        <div class="comment-item" style="margin: 16px 0;">
+                            <h5 class="comment-user">{{ com.owner.username }}</h5>
+                            <small class="comment" contenteditable="true" style="outline: none">{{ com.text }}</small>
+                            {% if com.owner == user %}
+                                <button>fix</button>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                </div>
+                {% if request.user.is_authenticated %}
+                    <form action="{% url 'detail' det_id=product.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="text">
+                        <button type="submit"> ADD</button>
+                    </form>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 com-about">
+            <div class="p-5 border bg-light commodity_about">
+                <p class="commodity_about-brand">{{ product.title }}</p>
+                <h4 class="commodity_about-name">{{ product.title }}</h4>
+                <div class="commodity_about_price_content">
+                    <p class="commodity_about_price-old">{{ product.old_price }}</p>
+                    <p class="commodity_about_price-sale">{{ product.cur }}</p>
+                </div>
+                <div class="commodity_about_count_content">
+                    <p class="commodity_about_count_title">Укажите количество</p>
+                    <div class="commodity_about_count_types_content">
+                        <button class="commodity_about_count_types commodity_count-active">{{ product.amount }}</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .commodity_content {
+        margin-top: 50px;
+        height: 100vh;
+    }
+
+    .commodity_content .commodity_hero {
+        height: 100vh;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row {
+        height: 600px;
+        overflow: hidden;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row .commodity_hero_imgs_content {
+        height: 100% !important;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row .commodity_hero_imgs_content .commodity_hero_imgs_content_row {
+        height: 100%;
+        width: 100%;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row .commodity_hero_imgs_content .commodity_hero_img_items {
+        margin-bottom: 16px;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row .commodity_hero_imgs_content .commodity_hero_img_items .commodity_hero_img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row .commodity_hero_imgs_content .commodity_hero_content {
+        overflow: scroll;
+    }
+
+    .commodity_content .commodity_hero .commodity_hero_row .commodity_hero_imgs_content .commodity_hero_content .carousel-inner img {
+        object-fit: cover;
+    }
+
+    .commodity_content .commodity_hero .commodity_take {
+        margin-top: 50px;
+    }
+
+    .commodity_content .commodity_hero .commodity_take .commodity_take-title {
+        font-size: 32px;
+        font-weight: 600;
+        text-transform: none;
+        font-family: Inter, san-serif;
+        color: #1A1458;
+        padding: 16px 0;
+        border-bottom: 0.5px solid #3f3d3d;
+    }
+
+    .commodity_content .commodity_hero .commodity_take .commodity_take-about {
+        font-size: 16px;
+        font-weight: 400;
+        text-transform: none;
+        font-family: Inter, san-serif;
+        margin-top: 8px;
+        margin-bottom: 16px;
+    }
+
+    .commodity_content .commodity_hero .commodity_take .commodity_take_warn .commodity_take_warn-title {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .commodity_content .commodity_hero .commodity_take .commodity_take_warn .commodity_take_warn_content .commodity_take_warn-list {
+        font-size: 16px;
+    }
+
+    .commodity_content .commodity_about p {
+        font-size: 16px;
+        font-weight: 500;
+        font-family: Inter, san-serif;
+    }
+
+    .commodity_content .commodity_about .commodity_about-brand {
+        font-size: 16px;
+        font-weight: normal;
+        font-family: Inter, san-serif;
+        color: #767676;
+    }
+
+    .commodity_content .commodity_about .commodity_about-name {
+        font-size: 32px;
+        text-transform: none;
+        font-weight: 600;
+        font-family: Inter, san-serif;
+        color: #1D1D1D;
+        margin-top: 16px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_price_content {
+        display: flex;
+        margin-top: 12px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_price_content .commodity_about_price-now {
+        margin-right: 16px;
+        color: #E21D23;
+    }
+
+    .commodity_content .commodity_about .commodity_about_price_content .commodity_about_price-old {
+        margin-right: 16px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_price_content .commodity_about_price-sale {
+        margin-right: 16px;
+        color: #E21D23;
+    }
+
+    .commodity_content .commodity_about .commodity_about_color_content {
+        margin-top: 24px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_color_content .commodity_about_color_name-content {
+        display: flex;
+    }
+
+    .commodity_content .commodity_about .commodity_about_color_content .commodity_about_color_name-content .commodity_about_color_title {
+        margin-right: 8px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_color_content .commodity_about_color_name-content .commodity_about_color_name {
+        color: #767676;
+    }
+
+    .commodity_content .commodity_about .commodity_about_color_content .commodity_about_color_types_content {
+        margin-top: 8px;
+        display: flex;
+    }
+
+    .commodity_content .commodity_about .commodity_about_color_content .commodity_about_color_types_content .commodity_about_color_types {
+        margin-right: 16px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #767676;
+    }
+
+    .commodity_content .commodity_about .commodity_about_size_content {
+        margin-top: 24px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_size_content .commodity_about_size_types_content {
+
+        margin-top: 8px;
+        display: flex;
+    }
+
+    .commodity_content .commodity_about .commodity_about_size_content .commodity_about_size_types_content .commodity_about_size_types {
+        margin-right: 8px;
+        padding: 8px;
+        border: 0.3px solid #767676;
+        border-radius: 4px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_size_content .commodity_about_size_types_content .commodity_size-active {
+        background: #1A1458;
+        color: white;
+        border: 0.5px solid #1A1458;
+    }
+
+    .commodity_content .commodity_about .commodity_about_count_content {
+        margin-top: 24px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_count_content .commodity_about_count_types_content {
+        margin-top: 8px;
+        display: flex;
+    }
+
+    .commodity_content .commodity_about .commodity_about_count_content .commodity_about_count_types_content .commodity_about_count_types {
+        margin-right: 8px;
+        padding: 8px 16px;
+        border: 0.3px solid #767676;
+        border-radius: 4px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_count_content .commodity_about_count_types_content .commodity_count-active {
+        background: #1A1458;
+        color: white;
+        border: 0.5px solid #1A1458;
+    }
+
+    .commodity_content .commodity_about .commodity_about_like_content {
+        margin-top: 24px;
+        display: flex;
+    }
+
+    .commodity_content .commodity_about .commodity_about_like_content .commodity_about_like-bag {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        background: #1A1458;
+        color: white;
+        padding: 8px 16px;
+        margin-right: 16px;
+        border-radius: 4px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_like_content .commodity_about_like-bag .commodity_about_count_title {
+        font-weight: 400;
+        margin-right: 16px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_like_content .commodity_about_like {
+        border: 0.5px solid #1A1458;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_store_content {
+        margin-top: 32px;
+        border-radius: 10px;
+        background: #E0EEFF;
+        border: 0.5px solid #E0EEFF;
+        padding: 24px 12px;
+    }
+
+    .commodity_content .commodity_about .commodity_about_store_content .commodity_about_store_title {
+        font-weight: 600;
+    }
+
+    .commodity_content .commodity_about .commodity_about_store_content .commodity_about_store_type {
+        font-weight: 400;
+        margin-top: 16px;
+    }
+
+    .commodity_hero_content {
+        width: 100% !important;
+    }
+
+    .com-about {
+        position: sticky !important;
+        top: 0 !important;
+    }
+
+    .commodity_hero_row {
+        width: 100% !important;
+    }
+
+    img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+
+    .carousel-item {
+        height: 100% !important;
+        overflow: hidden;
+    }
+
+    .slide-img {
+        height: 100%;
+    }
+
+    .col-12 {
+        height: 100%;
+    }
+</style>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</html>
+
+
+

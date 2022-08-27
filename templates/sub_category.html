@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+    <nav class="category">
+        {% for s in sub %}
+            <div class="category_product">
+                <img src="{{ s.image.url }}" alt="" class="category_product-img">
+                <h2 class="product-title">{{ s.title }}</h2>
+                <a href="{% url 'product' s.pk %}" class="product-link"></a>
+            </div>
+        {% endfor %}
+    </nav>
+</div>
+<style>
+    .container {
+
+    }
+
+    .category {
+        margin-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .category_product {
+        margin-top: 16px;
+        margin-right: 8px;
+        width: 23%;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category_product:last-child {
+        margin-right: 0;
+    }
+
+    .category_product-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .product-title {
+        position: absolute;
+        bottom: 30px;
+        text-align: center;
+        z-index: 4;
+        left: 0;
+        right: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+    }
+
+    .product-link {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        background: rgba(0, 0, 0, .4);
+    }
+</style>
+</body>
+</html>
